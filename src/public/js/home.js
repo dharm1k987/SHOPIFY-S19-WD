@@ -67,11 +67,35 @@ $(document).ready(function() {
             let title = "<div class='col-md-6'>" + list[item]["title"] + "</div>";
             let myString = $("<div />").html(list[item]["body"]).text();
             let description = "<div class='col-md-4'>" + myString + "</div>";
-            let star = "<div class='col-md-2'><div class='star' id='star-fav'></div></div>";
+            
             // not all the data points have an id, so we cannot base our favourites on this
-            let divId = list[item]["title"] + myString;
-            let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
-            $(".top-results").append(full);
+            let divId = list[item]["title"];
+            var star = "<div class='col-md-2'><div class='star' id='star-fav'></div></div>";
+
+            // the star should be coloured from the start
+            let data = {"id": divId};
+            $.ajax({
+                type: 'POST',
+                url: '/checkFav',
+                data: data,
+                success: function(response) {
+                    console.log("success");
+                    star = "<div class='col-md-2'><div class='star' style='background-color:lightgray;' id='star-fav'></div></div>";
+                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
+                    console.log(star);
+                    $(".top-results").append(full);
+                   
+                },
+                error: function(response) {
+                    console.log("something not right.");
+                    star = "<div class='col-md-2'><div class='star' style='background-color:yellow;' id='star-fav'></div></div>";
+                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
+                    console.log(star);
+                    $(".top-results").append(full);
+                }
+            });
+
+
            // $("" + list[item]["body"] + "").appendTo(".top-results");
         }
     }

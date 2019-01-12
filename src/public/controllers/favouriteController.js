@@ -28,4 +28,18 @@ module.exports  = function(app) {
             }
         });
     })
+
+    app.post("/checkFav", urlencodedParser, function(req, res) {
+
+        db.find({"id": req.body.id}, function(err, docs){
+            if (docs.length == 0) {
+                // this means it does not exist, this is good
+                res.status(200);
+                res.send({});
+            } else {
+                res.status(500);
+                res.send({});
+            }
+        });
+    })
 };
