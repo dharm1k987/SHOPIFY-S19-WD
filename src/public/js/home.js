@@ -4,6 +4,7 @@ $(document).ready(function() {
         handleBtnEvent($("#keyword").val());
     });
 
+
     // map key by key
     $('#keyword').keyup(function(e){
         let keyword = $("#keyword").val();
@@ -65,11 +66,21 @@ $(document).ready(function() {
            //  console.log(list[item]["body"]);
             let title = "<div class='col-md-6'>" + list[item]["title"] + "</div>";
             let myString = $("<div />").html(list[item]["body"]).text();
-            let description = "<div class='col-md-6'>" + myString + "</div>";
-            let full = "<div class='row item-in-result' style='margin: 0%; margin-bottom: 5%;'>" + title + description + "</div>"
+            let description = "<div class='col-md-4'>" + myString + "</div>";
+            let star = "<div class='col-md-2'><div class='star' id='star-fav'></div></div>";
+            // not all the data points have an id, so we cannot base our favourites on this
+            let divId = list[item]["title"] + myString;
+            let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
             $(".top-results").append(full);
            // $("" + list[item]["body"] + "").appendTo(".top-results");
         }
     }
+
+    document.addEventListener('click',function(e){
+        if(e.target && e.target.id== 'star-fav'){//do something}}
+            console.log(e.target.parentNode.parentElement.id);
+    }});
+
+
 
 });

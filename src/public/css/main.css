@@ -9,3 +9,9 @@
     float:right;
     width: 100%;
 }
+
+.star {
+    height: 15px;
+    width: 15px;
+    background-color: lightgray;
+}
