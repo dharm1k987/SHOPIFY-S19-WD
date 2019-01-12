@@ -1,0 +1,11 @@
+#main-text {
+    color: white;
+    background-color: lightgreen;
+    padding: 3%;
+    font-size: 5em;
+}
+
+.btn-search {
+    float:right;
+    width: 100%;
+}
