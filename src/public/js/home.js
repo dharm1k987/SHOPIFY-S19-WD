@@ -1,5 +1,8 @@
 $(document).ready(function() {
 
+    var regularResults = [];
+    var favResults = [];
+
     $(".btn-search").click(function() {
         handleBtnEvent($("#keyword").val());
     });
@@ -60,8 +63,10 @@ $(document).ready(function() {
 
     function clearDiv() {
         $(".item-in-result").remove();
+        regularResults = []; favResults = [];
     }
     function appendToDiv(list) {
+
         for (var item in list) {
            //  console.log(list[item]["body"]);
             let title = "<div class='col-md-6'>" + list[item]["title"] + "</div>";
@@ -81,23 +86,37 @@ $(document).ready(function() {
                 success: function(response) {
                     console.log("success");
                     star = "<div class='col-md-2'><div class='star' style='background-color:lightgray;' id='star-fav'></div></div>";
-                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
-                    console.log(star);
-                    $(".top-results").append(full);
+                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 3%; margin-top: 2%;'>" + title + description + star + "</div>";
+                    regularResults.push(full);
+                    decideWherePush(full, false);
+                    //$(".top-results").append(full);
                    
                 },
                 error: function(response) {
                     console.log("something not right.");
-                    star = "<div class='col-md-2'><div class='star' style='background-color:yellow;' id='star-fav'></div></div>";
-                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 5%;'>" + title + description + star + "</div>";
-                    console.log(star);
-                    $(".top-results").append(full);
+                    star = "<div class='col-md-2'><div class='star' style='background-color:green;' id='star-fav'></div></div>";
+                    let full = "<div class='row item-in-result'" + "id='" + divId + "'style='margin: 0%; margin-bottom: 3%; margin-top: 2%;'>" + title + description + star + "</div>";
+                    favResults.push(full);
+                    decideWherePush(full, true);
+                    //$(".top-results").append(full);
                 }
             });
 
 
            // $("" + list[item]["body"] + "").appendTo(".top-results");
         }
+    }
+
+    function decideWherePush(fullHtml, currentFav) {
+        // if there are no favs, hide the current fav text
+        if (favResults.length == 0) {
+            $("#fav-text").hide();
+        } else {$("#fav-text").show(); }
+        if (currentFav == true) {
+            $(".top-favs").append(fullHtml);
+        }
+        $(".top-results").append(fullHtml);
+        
     }
 
     document.addEventListener('click',function(e){
@@ -114,12 +133,17 @@ $(document).ready(function() {
             success: function(response) {
                 console.log("success");
                 // change the colour
-                e.target.style.backgroundColor = "yellow";
+                e.target.style.backgroundColor = "green";
+                clearDiv();
+                handleBtnEvent($("#keyword").val());
                
             },
             error: function(response) {
                 console.log("something not right.");
                 e.target.style.backgroundColor = "lightgray";
+                clearDiv();
+                handleBtnEvent($("#keyword").val());
+                
             }
         });
     }});
