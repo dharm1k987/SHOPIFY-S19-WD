@@ -77,8 +77,27 @@ $(document).ready(function() {
     }
 
     document.addEventListener('click',function(e){
+        console.log(e);
         if(e.target && e.target.id== 'star-fav'){//do something}}
             console.log(e.target.parentNode.parentElement.id);
+
+        // send favourite/unfavourite request to database
+        let data = {"id": e.target.parentNode.parentElement.id};
+        $.ajax({
+            type: 'POST',
+            url: '/fav',
+            data: data,
+            success: function(response) {
+                console.log("success");
+                // change the colour
+                e.target.style.backgroundColor = "yellow";
+               
+            },
+            error: function(response) {
+                console.log("something not right.");
+                e.target.style.backgroundColor = "lightgray";
+            }
+        });
     }});
 
 

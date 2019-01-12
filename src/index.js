@@ -6,6 +6,8 @@ var port = process.env.PORT || 8080;
 
 // singleton database modules
 var Datastore = require('nedb');
+var db = new Datastore({filename: path.join(__dirname, 'public/db/fav.db'), autoload: true});
+module.exports.db = db;
 
 app.use(cors());
 app.use(express.static(__dirname + "/public"));
@@ -18,6 +20,7 @@ app.set('controllers', path.join(__dirname, '/public/controllers'));
 app.set('db', path.join(__dirname, '/public/db'));
 
 var homeController = require(__dirname + "/public/controllers/homeController");
+var favouriteController = require(__dirname + "/public/controllers/favouriteController");
 
 
 // we will use ejs template for the navbar
@@ -25,6 +28,7 @@ app.set("view engine", "ejs")
 
 // fire controllers
 homeController(app);
+favouriteController(app);
 
 console.log("listening on port ...")
 app.listen(port);
