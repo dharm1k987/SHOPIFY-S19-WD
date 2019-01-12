@@ -1,13 +1,24 @@
 $(document).ready(function() {
 
     $(".btn-search").click(function() {
+        handleBtnEvent($("#keyword").val());
+    });
+
+    // map key by key
+    $('#keyword').keyup(function(e){
         let keyword = $("#keyword").val();
-
-        if (keyword.length == 0) {
+        //console.log(keyword.length);
+        if (keyword.length == 0) { clearDiv(); return; }
+        // enter
+        if(e.keyCode == 13)
+        {
             clearDiv();
-            return;
+            let keyword = $("#keyword").val();
+            handleBtnEvent(keyword);
         }
+    });
 
+    function handleBtnEvent(keyword) {
         $.ajax({
             type: 'GET',
             url: 'https://secure.toronto.ca/cc_sr_v1/data/swm_waste_wizard_APR?limit=1000',
@@ -20,10 +31,12 @@ $(document).ready(function() {
                 console.log("error");
             }
         });
+    }
 
-    });
+
 
     function narrowChoices(data, keyword) {
+        if (keyword.length == 0) { clearDiv(); return; }
         console.log("keyword is " + keyword);
         result = [];
         // loop
@@ -34,12 +47,14 @@ $(document).ready(function() {
 
                 console.log("match found");
                 result.push(data[key]);
+                
             
             }
+        
+        
+        }
         console.log(result);
-        clearDiv();
         appendToDiv(result);
-    }
 }
 
     function clearDiv() {
