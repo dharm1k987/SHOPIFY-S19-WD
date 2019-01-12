@@ -63,6 +63,7 @@ $(document).ready(function() {
 
     function clearDiv() {
         $(".item-in-result").remove();
+        $("#fav-text").hide();
         regularResults = []; favResults = [];
     }
     function appendToDiv(list) {
